@@ -218,3 +218,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+.agent/skills #보안관련 우려때문에 가림
+
+resources/ # 용량 과다
+
+outputs/figures/ # 산출물은 local에 두기로
