@@ -228,3 +228,4 @@ resources/
 
 # 산출물은 local에 두기로
 outputs/figures/ 
+outputs/ 
