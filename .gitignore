@@ -220,9 +220,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 
-#보안관련 우려때문에 가림
-.agent/skills/projects
-
 # 용량 과다
 resources/ 
 
