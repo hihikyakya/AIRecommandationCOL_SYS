@@ -1,52 +1,14 @@
 """사용자와 아이템 유형에 따른 추천 결과 비교."""
 
 import pandas as pd
-
-
-def _user_type(user, ratings):
-    count = int(ratings.loc[user].notna().sum())
-    if user == "U08":
-        return "상수 평가자"
-    if count == 1:
-        return "New"
-    if count >= 7:
-        return "Heavy"
-    return "Light"
-
-
-def _item_type(item, ratings):
-    count = int(ratings[item].notna().sum())
-    if count == 0:
-        return "New"
-    return "Popular" if count >= 5 else "Unpopular"
-
-
-def _top_recommendations(ratings, predictions, algorithm):
-    rows = []
-    for user in ratings.index:
-        candidates = predictions.loc[user, ratings.loc[user].isna()].sort_values(
-            ascending=False, kind="stable"
-        )
-        for rank, (item, score) in enumerate(candidates.head(2).items(), start=1):
-            rows.append(
-                {
-                    "알고리즘": algorithm,
-                    "사용자": user,
-                    "사용자 유형": _user_type(user, ratings),
-                    "순위": rank,
-                    "추천 아이템": item,
-                    "아이템 유형": _item_type(item, ratings),
-                    "예측 평점": float(score),
-                }
-            )
-    return pd.DataFrame(rows)
+from ..utils.util_P3 import top_recommendations
 
 
 def solve(df_problem: pd.DataFrame, df_userCF: pd.DataFrame, df_itemCF: pd.DataFrame):
     print("\n" + "=" * 60)
     print("[문제 3] 사용자·아이템 유형별 추천 결과 비교")
-    user_results = _top_recommendations(df_problem, df_userCF, "User-CF")
-    item_results = _top_recommendations(df_problem, df_itemCF, "Item-CF")
+    user_results = top_recommendations(df_problem, df_userCF, "User-CF")
+    item_results = top_recommendations(df_problem, df_itemCF, "Item-CF")
     results = pd.concat([user_results, item_results], ignore_index=True)
     print("\n[3-1] 사용자별 미평가 아이템 Top-2 추천")
     print(results.to_string(index=False, formatters={"예측 평점": "{:.3f}".format}))

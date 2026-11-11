@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 def pearson_similarity(ratings: pd.DataFrame) -> pd.DataFrame:
     """공통 평가가 2개 이상인 사용자 쌍의 피어슨 상관계수를 계산한다."""
     users = ratings.index
@@ -14,7 +17,7 @@ def pearson_similarity(ratings: pd.DataFrame) -> pd.DataFrame:
     return sim
 
 
-def baseline(ratings: pd.DataFrame):
+def _baseline(ratings: pd.DataFrame):
     global_mean = float(ratings.stack().mean())
     user_bias = ratings.mean(axis=1).sub(global_mean).fillna(0.0)
     item_bias = ratings.mean(axis=0).sub(global_mean).fillna(0.0)
@@ -52,10 +55,10 @@ def predict_cell(ratings, similarities, user, item, k=3, beta=0.0, use_baseline=
 
 def hop2_ratings(ratings: pd.DataFrame) -> pd.DataFrame:
     """미평가 셀을 1-hop 이웃의 평점으로 확장해 2-hop 이웃을 만든다."""
-    sim = _pearson_similarity(ratings)
+    sim = pearson_similarity(ratings)
     expanded = ratings.copy()
     for user in ratings.index:
         for item in ratings.columns[ratings.loc[user].isna()]:
-            value, _ = _predict_cell(ratings, sim, user, item)
+            value, _ = predict_cell(ratings, sim, user, item)
             expanded.loc[user, item] = value
     return expanded

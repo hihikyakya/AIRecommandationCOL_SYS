@@ -1,8 +1,6 @@
 """피어슨 기반 사용자 협업 필터링."""
-
-import numpy as np
 import pandas as pd
-from ..utils.util_P1 import pearson_similarity, predict_cell, hop2_ratings, predict_cell 
+from ..utils.util_P1 import pearson_similarity, predict_cell, hop2_ratings 
 
 
 def solve(df_problem: pd.DataFrame):
@@ -17,7 +15,7 @@ def solve(df_problem: pd.DataFrame):
         for item in df_problem.columns[df_problem.loc[user].isna()]:
             value, _ = predict_cell(df_problem, similarity, user, item)
             predictions.loc[user, item] = value
-    print("\n[1-2] 미평가 셀을 채운 예측 평점 행렬 (k=3, 양의 유사도 이웃)")
+    print("\n[1-2] 미평가 셀을 채운 예측 평점 행렬 (k=3, 양의 유사도 이웃); 실제 서비스에서는 정수로 변환하여 최종 판단에 사용하기")
     print(predictions.round(3).to_string())
 
     user, item = "U05", "I07"
