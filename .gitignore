@@ -221,7 +221,7 @@ __marimo__/
 
 
 #보안관련 우려때문에 가림
-.agent/
+.agent/skills/projects
 
 # 용량 과다
 resources/ 
