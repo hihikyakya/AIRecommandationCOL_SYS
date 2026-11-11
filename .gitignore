@@ -220,8 +220,11 @@ __marimo__/
 .streamlit/secrets.toml
 
 
-.agent/ #보안관련 우려때문에 가림
+#보안관련 우려때문에 가림
+.agent/
 
-resources/ # 용량 과다
+# 용량 과다
+resources/ 
 
-outputs/figures/ # 산출물은 local에 두기로
+# 산출물은 local에 두기로
+outputs/figures/ 
