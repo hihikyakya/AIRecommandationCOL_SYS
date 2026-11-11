@@ -25,12 +25,21 @@ def solve(df_problem: pd.DataFrame):
 
     new_users = ["U09", "U10", "U11", "U12"]
     print("\n[2-4] New User 기본 예측의 동점 원인 및 보정 결과")
+    print(
+        "  원인: 기본 Item-CF는 이웃 아이템 평점에서 사용자 평균을 뺀 잔차를 합산합니다. "
+        "평점이 1개뿐인 사용자는 그 한 평점이 곧 사용자 평균이므로 관측 잔차가 0입니다. "
+        "따라서 이웃이 있어도 보정항이 0이고 모든 미평가 아이템 예측이 동일한 사용자 평균이 됩니다. "
+        "이웃이 없을 때도 사용자 평균으로 폴백하므로 같은 동점이 발생합니다."
+    )
     for user in new_users:
+        observed = df_problem.loc[user].dropna()
         missing = df_problem.loc[user].isna()
         basic = predictions.loc[user, missing]
         corrected = baseline_predictions.loc[user, missing]
         print(
-            f"  {user}: 기본 고유 예측값={basic.nunique()}개, "
+            f"  {user}: 관측 평점={observed.to_dict()}, 사용자 평균={observed.mean():.3f}, "
+            f"단일 관측 잔차={observed.iloc[0] - observed.mean():.3f}; "
+            f"기본 고유 예측값={basic.nunique()}개, "
             f"보정 고유 예측값={corrected.nunique()}개; "
             f"기본={basic.round(2).to_dict()}, 보정={corrected.round(2).to_dict()}"
         )
